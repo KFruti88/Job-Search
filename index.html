@@ -1,0 +1,206 @@
+<div id="wp-custom-wrapper">
+    <div id="hustle-display-container">
+        <h2 class="hustle-title">Job Search Progress</h2>
+        
+        <div class="hustle-platform-stats">
+            <div class="platform-badge applied-glow">Applied: <span id="count-applied">0</span></div>
+            <div class="platform-badge interview-glow">Interviews: <span id="count-interview">0</span></div>
+            <div class="platform-badge rejected-glow">Rejected: <span id="count-rejected">0</span></div>
+        </div>
+
+        <div class="hustle-stats-row" style="margin-top: 25px; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem;">
+            <span>Monthly Goal:</span>
+            <span id="app-count-text">0 / 20</span>
+        </div>
+        <div class="hustle-progress-bar">
+            <div id="hustle-progress-fill"></div>
+        </div>
+
+        <div id="hustle-job-list">
+            </div>
+    </div>
+</div>
+
+<style>
+/* Global Container Styling */
+#wp-custom-wrapper #hustle-display-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid #00f2ff;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0, 242, 255, 0.4);
+    color: #fff;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    transition: all 0.5s ease;
+}
+
+/* Header Styling */
+#wp-custom-wrapper .hustle-title {
+    text-align: center;
+    color: #00f2ff;
+    text-shadow: 0 0 15px #00f2ff;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+
+/* Badge Layout */
+#wp-custom-wrapper .hustle-platform-stats {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+#wp-custom-wrapper .platform-badge {
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* Status Colors & Glows */
+#wp-custom-wrapper .applied-glow { border-color: #00f2ff; box-shadow: 0 0 10px #00f2ff; color: #00f2ff; }
+#wp-custom-wrapper .interview-glow { border-color: #ff00ff; box-shadow: 0 0 15px #ff00ff; color: #ff00ff; }
+#wp-custom-wrapper .rejected-glow { border-color: #ff4d4d; box-shadow: 0 0 10px #ff4d4d; color: #ff4d4d; }
+
+/* Progress Bar */
+#wp-custom-wrapper .hustle-progress-bar {
+    width: 100%;
+    height: 14px;
+    background: #111;
+    border-radius: 7px;
+    margin: 15px 0 25px 0;
+    overflow: hidden;
+    border: 1px solid #333;
+}
+
+#wp-custom-wrapper #hustle-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #00f2ff, #7000ff);
+    box-shadow: 0 0 15px #00f2ff;
+    transition: width 1.5s cubic-bezier(0.1, 0, 0.1, 1);
+}
+
+/* Job List Items */
+.job-entry-row {
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s ease;
+}
+
+.job-entry-row:last-child { border-bottom: none; }
+
+/* Mobile Aspect Ratio & Responsive Tweaks */
+@media (max-width: 600px) {
+    #wp-custom-wrapper #hustle-display-container {
+        aspect-ratio: 1 / 1;
+        width: 95%;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    #wp-custom-wrapper .hustle-title { font-size: 1.4rem; }
+    #wp-custom-wrapper .platform-badge { font-size: 0.75rem; padding: 6px 12px; }
+}
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+(function() {
+    // 1. Firebase Configuration
+    const firebaseConfig = {
+        databaseURL: "https://job-hustle-tracker-default-rtdb.firebaseio.com"
+    };
+
+    // Initialize named instance to prevent collisions
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig, 'hustleViewerInstance');
+    }
+    const app = firebase.app('hustleViewerInstance');
+    const db = app.database();
+
+    // 2. Real-time Listener
+    db.ref("applications").on("value", (snapshot) => {
+        const data = snapshot.val();
+        if (!data) return;
+
+        // Convert to array and reverse (Newest first)
+        const entries = Object.values(data);
+        
+        let applied = 0, interview = 0, rejected = 0;
+        const goal = 20;
+
+        // 3. Update Counts
+        entries.forEach(job => {
+            if (job.status === "Interview Scheduled") interview++;
+            else if (job.status === "Rejected") rejected++;
+            else applied++;
+        });
+
+        document.getElementById('count-applied').innerText = applied;
+        document.getElementById('count-interview').innerText = interview;
+        document.getElementById('count-rejected').innerText = rejected;
+        document.getElementById('app-count-text').innerText = `${entries.length} / ${goal}`;
+
+        // 4. Progress Bar & Milestone Effects
+        const fill = document.getElementById('hustle-progress-fill');
+        const container = document.getElementById('hustle-display-container');
+        const percent = Math.min((entries.length / goal) * 100, 100);
+        
+        fill.style.width = percent + "%";
+
+        if (entries.length >= goal) {
+            container.style.borderColor = "#ffd700";
+            container.style.boxShadow = "0 0 35px #ffd700";
+            fill.style.background = "linear-gradient(90deg, #ffd700, #ffa500)";
+        }
+
+        // 5. Render Job List
+        const listContainer = document.getElementById('hustle-job-list');
+        listContainer.innerHTML = "";
+        
+        // Show last 8 entries
+        entries.reverse().slice(0, 8).forEach(job => {
+            const isInterview = job.status === "Interview Scheduled";
+            const isRejected = job.status === "Rejected";
+            const hasLink = job.jobUrl && job.jobUrl !== "#";
+            
+            // Set Dynamic Color Based on Status
+            let statusColor = "#00f2ff"; // Cyan
+            if (isInterview) statusColor = "#ff00ff"; // Purple
+            if (isRejected) statusColor = "#ff4d4d"; // Red
+
+            // Use link if available, otherwise plain text
+            const nameContent = hasLink 
+                ? `<a href="${job.jobUrl}" target="_blank" style="color:${statusColor}; text-decoration:none; font-weight:bold; text-shadow:0 0 8px ${statusColor};">${job.company}</a>`
+                : `<span style="color:#fff; font-weight:bold; opacity:0.9;">${job.company}</span>`;
+
+            listContainer.innerHTML += `
+                <div class="job-entry-row" style="${isInterview ? 'border-left: 5px solid #ff00ff; padding-left: 15px; background: rgba(255,0,255,0.05); margin-bottom: 5px;' : ''}">
+                    <div style="display: flex; flex-direction: column;">
+                        ${nameContent}
+                        <span style="font-size: 0.75rem; opacity: 0.5; margin-top: 4px;">${new Date(job.timestamp).toLocaleDateString()}</span>
+                    </div>
+                    <span style="font-size: 0.85rem; font-weight: bold; color: ${statusColor};">
+                        ${job.status}
+                    </span>
+                </div>
+            `;
+        });
+    });
+})();
+</script>
