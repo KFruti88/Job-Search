@@ -1,6 +1,6 @@
 <div id="wp-custom-wrapper">
     <div id="hustle-display-container">
-        <!-- Header -->
+        <!-- Dashboard Header -->
         <div id="career-milestone-header">
             <h2 class="hustle-title">Job Search Tracker</h2>
             <div class="milestone-sub">Last Day of Work: <strong>June 4th, 2025</strong></div>
@@ -9,7 +9,7 @@
             </div>
         </div>
         
-        <!-- Stats Row -->
+        <!-- Statistics Badges -->
         <div class="hustle-platform-stats">
             <div class="platform-badge total-glow">Total: <span id="count-total">0</span></div>
             <div class="platform-badge applied-glow">Applied: <span id="count-applied">0</span></div>
@@ -17,85 +17,84 @@
             <div class="platform-badge rejected-glow">Rejected: <span id="count-rejected">0</span></div>
         </div>
 
-        <!-- Activity Feed Header -->
         <h3 class="activity-label">Activity Feed <span style="font-size: 0.6rem; opacity: 0.5; float: right; text-transform: none;">Yellow Ref# = Link • Tap for Details</span></h3>
         
+        <!-- Job Entries Scrollable Area -->
         <div id="hustle-job-list-container">
             <div id="hustle-job-list">
-                <div id="status-msg" style="text-align:center; padding:40px; opacity:0.6; font-style:italic;">
-                    Locating data nodes...
+                <div id="status-msg" style="text-align:center; padding:30px; opacity:0.6; font-style:italic;">
+                    Connecting to Firebase...
                 </div>
             </div>
         </div>
-        
-        <!-- Troubleshooting Log (Hidden unless error occurs) -->
-        <div id="debug-log" style="font-size: 10px; color: #ff4d4d; margin-top: 10px; opacity: 0.5; text-align: center;"></div>
     </div>
 </div>
 
 <style>
-/* Responsive Container - Fits Divi Mobile Settings */
+/* Responsive Container - Fits Divi Mobile Specs (Section 50, Row 30) */
 #wp-custom-wrapper #hustle-display-container {
     width: 100%; 
     max-width: 850px; 
     margin: 0 auto; 
-    padding: 15px;
+    padding: 12px;
     background: #0a0a0a; 
     border: 2px solid #00f2ff; 
     border-radius: 12px;
-    box-shadow: 0 0 25px rgba(0, 242, 255, 0.2); 
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); 
     color: #fff;
     font-family: 'Segoe UI', system-ui, sans-serif; 
     box-sizing: border-box;
 }
 
-.hustle-title { text-align: center; color: #00f2ff; text-transform: uppercase; margin: 0; font-size: 1.4rem; text-shadow: 0 0 8px #00f2ff; }
-.milestone-sub { text-align: center; font-size: 0.75rem; opacity: 0.6; margin: 5px 0 10px; }
+.hustle-title { text-align: center; color: #00f2ff; text-transform: uppercase; margin: 0; font-size: 1.3rem; text-shadow: 0 0 8px #00f2ff; }
+.milestone-sub { text-align: center; font-size: 0.7rem; opacity: 0.6; margin: 2px 0 8px; }
 
 #weeks-counter-box {
     text-align: center; 
-    padding: 10px; 
+    padding: 8px; 
     background: rgba(255, 215, 0, 0.05);
     border-radius: 8px; 
-    margin-bottom: 15px; 
+    margin-bottom: 12px; 
     font-weight: bold; 
-    font-size: 1.2rem; 
+    font-size: 1.1rem; 
     border: 1px solid rgba(255, 215, 0, 0.2);
 }
-.weeks-glow { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+.weeks-glow { color: #ffd700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.4); }
 
-/* Stats Badges */
-.hustle-platform-stats { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-bottom: 15px; }
-.platform-badge { padding: 5px 10px; border-radius: 4px; font-weight: bold; border: 1px solid; font-size: 0.7rem; background: #000; }
+/* Quick-Stats Badges */
+.hustle-platform-stats { display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; }
+.platform-badge { padding: 4px 8px; border-radius: 4px; font-weight: bold; border: 1px solid; font-size: 0.65rem; background: #000; }
 .total-glow { border-color: #fff; color: #fff; }
 .applied-glow { border-color: #007bff; color: #007bff; }
 .interview-glow { border-color: #ffc107; color: #ffc107; }
 .rejected-glow { border-color: #dc3545; color: #dc3545; }
 
-.activity-label { font-size: 0.75rem; color: #00f2ff; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(0,242,255,0.2); padding-bottom: 6px; margin-top: 5px; }
-.archive-divider { text-align: center; padding: 25px 0 10px; color: #ffd700; font-weight: bold; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; border-top: 1px dashed rgba(255,215,0,0.2); margin-top: 15px; }
+/* List Styles */
+.activity-label { font-size: 0.7rem; color: #00f2ff; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(0,242,255,0.2); padding-bottom: 5px; margin-top: 5px; }
+.archive-divider { text-align: center; padding: 25px 0 10px; color: #ffd700; font-weight: bold; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 3px; border-top: 1px dashed rgba(255, 215, 0, 0.2); margin-top: 15px; }
 
-/* Scrollable Area */
 #hustle-job-list-container { 
-    max-height: 550px; 
+    max-height: 480px; 
     overflow-y: auto; 
-    padding-right: 5px; 
+    padding-right: 4px; 
 }
 
-/* Card Styling - Fixed Status on Right */
-.job-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; position: relative; }
+/* Individual Job Entry Card */
+.job-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; position: relative; }
 .job-card:hover { background: rgba(255,255,255,0.05); border-color: #00f2ff; }
 
 .job-header { display: flex; justify-content: space-between; align-items: flex-start; }
 .job-title { font-weight: bold; font-size: 1rem; color: #fff; flex: 1; margin-right: 12px; line-height: 1.2; }
 
-.status-date-box { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; min-width: 90px; }
+/* Right-Side Status Logic */
+.status-date-box { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; min-width: 95px; }
 .status-pill { font-size: 0.6rem; font-weight: 900; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; border: 1px solid; text-align: center; width: 100%; }
 .date-label { font-size: 0.6rem; opacity: 0.5; font-weight: bold; }
 
+/* Yellow Clickable Reference (Column F) */
 .ref-number-link { color: #ffc107; font-size: 0.75rem; font-weight: bold; text-decoration: underline; margin-top: 6px; display: inline-block; }
 
-/* Description Drawer */
+/* Description Drawer (Column D) */
 .desc-dropdown { max-height: 0; overflow: hidden; opacity: 0; transition: all 0.3s ease; font-size: 0.8rem; color: #ccc; line-height: 1.4; }
 .job-card.active .desc-dropdown { max-height: 500px; opacity: 1; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
 
@@ -105,7 +104,7 @@
 
 @media (max-width: 600px) {
     .job-title { font-size: 0.9rem; }
-    .status-pill { font-size: 0.55rem; min-width: 80px; }
+    .status-pill { font-size: 0.55rem; min-width: 85px; }
 }
 </style>
 
@@ -114,7 +113,7 @@
 
 <script>
 (function() {
-    // 1. Weeks Calculation
+    // 1. Unemployment Milestone Logic
     const lastDay = new Date("June 4, 2025").getTime();
     function updateWeeks() {
         const now = new Date().getTime();
@@ -122,18 +121,17 @@
     }
     updateWeeks();
 
-    // 2. Firebase Connect
+    // 2. Firebase Connection
     const config = { databaseURL: "https://job-hustle-tracker-default-rtdb.firebaseio.com" };
     if (!firebase.apps.length) firebase.initializeApp(config, 'hustleViewer');
     const db = firebase.app('hustleViewer').database();
-    const logger = document.getElementById('debug-log');
 
     function getTheme(s) {
-        const st = s ? s.toLowerCase() : "";
+        const st = (s || "").toLowerCase();
         if (st.includes("applied")) return { color: "#007bff", label: "Applied" };
         if (st.includes("interview")) return { color: "#ffc107", label: "Interview" };
         if (st.includes("rejected")) return { color: "#dc3545", label: "Rejected" };
-        if (st.includes("hired")) return { color: "#28a745", label: "Hired" }; // Bold Green
+        if (st.includes("hired")) return { color: "#28a745", label: "Hired" }; 
         return { color: "#00f2ff", label: s || "Update" };
     }
 
@@ -143,21 +141,21 @@
         card.className = 'job-card';
         card.onclick = (e) => { if (e.target.tagName !== 'A') card.classList.toggle('active'); };
 
-        const ref = job.jobKey || job.referenceNumber || "Click for Link";
+        const ref = job.jobKey || job.referenceNumber || "View Link";
         const link = (job.jobUrl && job.jobUrl !== "#") ? job.jobUrl : "javascript:void(0)";
         const dateStr = job.timestamp ? new Date(job.timestamp).toLocaleDateString() : "Pending";
 
         card.innerHTML = `
             <div class="job-header">
-                <div class="job-title">${job.company || "Hustle Update"}</div>
+                <div class="job-title">${job.company || "Company Record"}</div>
                 <div class="status-date-box">
-                    <div class="status-pill" style="color:${theme.color}; border-color:${theme.color}; ${theme.label === 'Hired' ? 'font-weight:900;' : ''}">${theme.label}</div>
+                    <div class="status-pill" style="color:${theme.color}; border-color:${theme.color}; font-weight:900;">${theme.label}</div>
                     <div class="date-label">${dateStr}</div>
                 </div>
             </div>
             <a href="${link}" target="_blank" class="ref-number-link">Ref #: ${ref}</a>
             <div class="desc-dropdown">
-                <div style="font-weight:bold; color:${theme.color}; font-size:0.65rem; margin-bottom:5px; text-transform:uppercase;">Hustle Info:</div>
+                <div style="font-weight:bold; color:${theme.color}; font-size:0.65rem; margin-bottom:5px; text-transform:uppercase; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px;">Application Details:</div>
                 ${job.snippet || "Tap to expand details."}
             </div>
         `;
@@ -166,29 +164,29 @@
 
     function processData(snapshot) {
         const rawData = snapshot.val();
+        const list = document.getElementById('hustle-job-list');
+        
         if (!rawData) {
-            document.getElementById('status-msg').innerText = "Database is currently empty.";
+            list.innerHTML = "<div style='text-align:center; padding:40px; opacity:0.3;'>No data found. Sync your sheet!</div>";
             return;
         }
 
-        const list = document.getElementById('hustle-job-list');
-        list.innerHTML = "";
-        logger.innerText = ""; // Clear errors
-
         let allJobs = [];
+        const seen = new Set();
 
-        // Recursive flattening to find jobs in ANY folder (root, applications, or archive)
+        // Recursively find and flatten all job objects
         function findJobs(obj) {
             if (!obj || typeof obj !== 'object') return;
-            if (obj.company && (obj.timestamp || obj.status)) {
-                allJobs.push(obj);
+            if (obj.company && obj.timestamp) {
+                const id = obj.company + "_" + obj.timestamp;
+                if (!seen.has(id)) { allJobs.push(obj); seen.add(id); }
             } else {
                 Object.values(obj).forEach(val => findJobs(val));
             }
         }
         findJobs(rawData);
 
-        // Sort: Newest first
+        // Sort: Newest entries at top
         allJobs.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
 
         const now = new Date().getTime();
@@ -196,12 +194,7 @@
         const archive = allJobs.filter(j => (now - (j.timestamp || 0)) >= (8 * 24 * 60 * 60 * 1000));
 
         updateStats(allJobs);
-
-        if (allJobs.length === 0) {
-            list.innerHTML = "<div style='text-align:center; padding:40px; opacity:0.3;'>No valid job entries found.</div>";
-            return;
-        }
-
+        list.innerHTML = "";
         recent.forEach(j => list.appendChild(createCard(j)));
         if (archive.length > 0) {
             const d = document.createElement('div'); d.className = 'archive-divider'; d.innerText = "— Archive (8+ Days Old) —";
@@ -224,13 +217,6 @@
         document.getElementById('count-rejected').innerText = r;
     }
 
-    // Listen to EVERYTHING at the root so we never miss data
-    db.ref("/").on("value", processData, (err) => {
-        if(err.message.includes("permission_denied")) {
-            document.getElementById('status-msg').innerHTML = "<div style='color:#ff4d4d; font-size:12px;'>Firebase Rules Error: Set '.read' to true in your Console.</div>";
-        } else {
-            logger.innerText = "Connection Issue: " + err.message;
-        }
-    });
+    db.ref("/").on("value", processData);
 })();
 </script>
